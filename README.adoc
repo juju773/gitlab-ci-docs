@@ -1,0 +1,140 @@
+= gitlab-ci-docs
+:toc:
+:toclevels: 2
+
+Generate documentation from GitLab CI pipelines, including structured descriptions and Mermaid diagrams, directly from `.gitlab-ci.yml` files.
+
+This project is written in Python and targets CPython 3.11+.
+
+== Features
+
+* Parse GitLab CI pipelines from YAML
+* Generate:
+** Mermaid diagrams (pipeline DAG)
+** AsciiDoc documentation
+* CLI-first design
+* Clean, extensible architecture (domain-driven)
+
+== Requirements
+
+* Python 3.11 or newer (CPython)
+* Git
+* pipx (recommended)
+
+== Environment setup
+
+The recommended setup uses Poetry with a project-local virtual environment.
+
+=== 1. Create a virtual environment (optional but recommended)
+
+[source,shell]
+----
+python -m venv .venv
+----
+
+Activate it:
+
+[source,shell]
+----
+# Linux / macOS
+source .venv/bin/activate
+
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+----
+
+=== 2. Upgrade pip
+
+[source,shell]
+----
+python -m pip install --upgrade pip
+----
+
+=== 3. Install pipx
+
+[source,shell]
+----
+pip install pipx
+----
+
+Ensure pipx binaries are available in your PATH:
+
+[source,shell]
+----
+pipx ensurepath
+----
+
+Restart your terminal after this step.
+
+=== 4. Install Poetry
+
+[source,shell]
+----
+pipx install poetry
+----
+
+Verify installation:
+
+[source,shell]
+----
+poetry --version
+----
+
+=== 5. Configure Poetry to use a local `.venv`
+
+[source,shell]
+----
+poetry config virtualenvs.in-project true
+----
+
+== Project setup
+
+Install project dependencies (including development tools):
+
+[source,shell]
+----
+poetry install --with dev
+----
+
+== Development tools
+
+This project uses the following tools:
+
+* *Poetry* — dependency and packaging management
+* *Ruff* — linting and formatting
+* *MyPy* — static type checking
+* *Pytest* — testing
+* *pre-commit* — automated quality checks
+
+=== Enable pre-commit hooks
+
+[source,shell]
+----
+poetry run pre-commit install
+----
+
+Pre-commit hooks will now run automatically on each `git commit`.
+
+== Project structure
+
+[source]
+----
+gitlabci-docs/
+├── gitlabci_doc/
+│   ├── domain/
+│   ├── application/
+│   └── infrastructure/
+├── tests/
+├── pyproject.toml
+├── .pre-commit-config.yaml
+└── README.adoc
+----
+
+== Status
+
+This project is currently under active development.
+The initial focus is on documentation generation only (no pipeline validation at this stage).
+
+== License
+
+This project is licensed under the GNU General Public License v3.0 (GPLv3).

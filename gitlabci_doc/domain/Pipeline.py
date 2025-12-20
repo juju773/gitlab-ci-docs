@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Mapping
+from typing import Mapping, Any
 
 from gitlabci_doc.domain.Job import Job
 from gitlabci_doc.domain.Stage import Stage
@@ -24,6 +24,7 @@ class Pipeline:
     stages: list[Stage]
     jobs: list[Job]
     variables: Mapping[str, str] | None = None
+    workflow: Mapping[str, Any] | None = None
 
     def print(self):
         if self.name is not None:

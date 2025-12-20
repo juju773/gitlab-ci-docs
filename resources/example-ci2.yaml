@@ -1,0 +1,168 @@
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+    - when: never
+
+stages:
+  - prepare
+  - build
+  - test
+  - quality
+  - security
+  - package
+  - deploy
+
+default:
+  image: python:3.12
+  interruptible: true
+
+# -------------------
+# Prepare stage
+# -------------------
+
+generate_version:
+  stage: prepare
+  script:
+    - echo "1.2.$CI_PIPELINE_IID" > version.txt
+  artifacts:
+    paths:
+      - version.txt
+
+lint_config:
+  stage: prepare
+  script:
+    - echo "Linting config"
+
+# -------------------
+# Build stage
+# -------------------
+
+build_backend:
+  stage: build
+  needs:
+    - generate_version
+  script:
+    - echo "Building backend"
+  artifacts:
+    paths:
+      - backend.tar.gz
+
+build_frontend:
+  stage: build
+  needs:
+    - generate_version
+  script:
+    - echo "Building frontend"
+  artifacts:
+    paths:
+      - frontend.tar.gz
+
+build_docs:
+  stage: build
+  script:
+    - echo "Building documentation"
+
+# -------------------
+# Test stage
+# -------------------
+
+unit_tests:
+  stage: test
+  needs:
+    - build_backend
+  script:
+    - echo "Running unit tests"
+
+integration_tests:
+  stage: test
+  needs:
+    - build_backend
+    - build_frontend
+  script:
+    - echo "Running integration tests"
+
+e2e_tests:
+  stage: test
+  needs:
+    - build_frontend
+  script:
+    - echo "Running end-to-end tests"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+# -------------------
+# Quality stage
+# -------------------
+
+code_coverage:
+  stage: quality
+  needs:
+    - unit_tests
+    - integration_tests
+  script:
+    - echo "Computing coverage"
+
+static_analysis:
+  stage: quality
+  script:
+    - echo "Running static analysis"
+
+# -------------------
+# Security stage
+# -------------------
+
+dependency_scan:
+  stage: security
+  needs:
+    - build_backend
+  script:
+    - echo "Scanning dependencies"
+
+sast:
+  stage: security
+  script:
+    - echo "Running SAST"
+
+# -------------------
+# Package stage
+# -------------------
+
+package_image:
+  stage: package
+  needs:
+    - build_backend
+    - build_frontend
+    - code_coverage
+    - static_analysis
+    - dependency_scan
+  script:
+    - echo "Packaging Docker image"
+  artifacts:
+    paths:
+      - image.tar
+
+# -------------------
+# Deploy stage
+# -------------------
+
+deploy_staging:
+  stage: deploy
+  needs:
+    - package_image
+  script:
+    - echo "Deploying to staging"
+  environment:
+    name: staging
+
+deploy_production:
+  stage: deploy
+  needs:
+    - package_image
+  script:
+    - echo "Deploying to production"
+  environment:
+    name: production
+  when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

@@ -1,5 +1,4 @@
 import pathlib
-import sys
 from typing import Any, Mapping
 
 import yaml
@@ -9,6 +8,18 @@ from gitlabci_doc.domain.Job import Job
 from gitlabci_doc.domain.Pipeline import Pipeline
 from gitlabci_doc.domain.Stage import Stage
 
+
+GITLAB_CI_RESERVED_KEYS = {
+    "stages",
+    "variables",
+    "workflow",
+    "default",
+    "include",
+    "image",
+    "services",
+    "before_script",
+    "after_script",
+}
 
 class GitlabCIParserError(Exception):
     """Base exception for GitLab CI parsing errors."""
@@ -78,6 +89,9 @@ def _is_job_definition(name: str, value: Any) -> bool:
     :param value:
     :return:
     """
+    if name in GITLAB_CI_RESERVED_KEYS:
+        return False
+
     if name.startswith("."):
         return False
 
@@ -160,6 +174,17 @@ def _parse_rules(content: dict[str, Any]) -> list[Mapping[str, Any]] | None:
 
     return rules
 
+def _parse_workflow(raw: dict[str, Any]) -> Mapping[str, Any] | None:
+    workflow = raw.get("workflow")
+
+    if workflow is None:
+        return None
+
+    if not isinstance(workflow, dict):
+        raise GitlabCIParserError("'workflow' must be a mapping")
+
+    return workflow
+
 def _parse_jobs(raw: dict[str, Any]) -> list[Job]:
     jobs: list[Job] = []
 
@@ -191,11 +216,13 @@ def parse(path: pathlib.Path) -> Pipeline:
     stages = _parse_stages(raw)
     jobs = _parse_jobs(raw)
     variables = _parse_variables(raw)
+    workflow = _parse_workflow(raw)
 
     return Pipeline(
         name=None,
         stages=stages,
         jobs=jobs,
         variables=variables,
+        workflow=workflow,
     )
 

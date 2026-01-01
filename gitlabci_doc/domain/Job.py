@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Mapping, Sequence, Any
+from typing import Any, Mapping, Sequence
 
 
 @dataclass(frozen=True)
@@ -33,6 +33,7 @@ class Job:
     needs : list[Job] | None
         list of jobs that are necessary for it to run
     """
+
     name: str
     stage: str
     script: Sequence[str]
@@ -47,7 +48,6 @@ class Job:
 
     needs: list[str] | None = None
     rules: list[Mapping[str, Any]] | None = None
-
 
     def print(self):
         print(f"\t{self.name}")

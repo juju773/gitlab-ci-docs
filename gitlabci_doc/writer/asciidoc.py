@@ -9,4 +9,3 @@ class AsciiDocWriter:
     """
     Writes AsciiDoc content to disk.
     """
-

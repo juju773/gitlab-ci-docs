@@ -1,8 +1,8 @@
 from collections import defaultdict
 from itertools import cycle
-from typing import List, Dict
+from typing import Dict, List
 
-from gitlabci_doc.domain.Graph import PipelineGraph, JobNode, Dependency
+from gitlabci_doc.domain.Graph import Dependency, JobNode, PipelineGraph
 from gitlabci_doc.renderers.base import GraphRenderer
 
 
@@ -79,9 +79,7 @@ class MermaidRenderer(GraphRenderer):
             styles.append(
                 f"classDef {stage_class} fill:{color},stroke:#333,stroke-width:1px"
             )
-            styles.append(
-                f"class {','.join(job.name for job in jobs)} {stage_class}"
-            )
+            styles.append(f"class {','.join(job.name for job in jobs)} {stage_class}")
 
         return styles
 
@@ -96,9 +94,7 @@ class MermaidRenderer(GraphRenderer):
 
         for dep in dependencies:
             if dep.kind == "needs":
-                lines.append(
-                    f"  {dep.from_job} --> {dep.to_job}"
-                )
+                lines.append(f"  {dep.from_job} --> {dep.to_job}")
             # else:
             #     lines.append(
             #         f"  {dep.from_job} -.-> {dep.to_job}"

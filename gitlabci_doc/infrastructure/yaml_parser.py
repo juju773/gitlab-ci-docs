@@ -8,7 +8,6 @@ from gitlabci_doc.domain.Job import Job
 from gitlabci_doc.domain.Pipeline import Pipeline
 from gitlabci_doc.domain.Stage import Stage
 
-
 GITLAB_CI_RESERVED_KEYS = {
     "stages",
     "variables",
@@ -20,6 +19,7 @@ GITLAB_CI_RESERVED_KEYS = {
     "before_script",
     "after_script",
 }
+
 
 class GitlabCIParserError(Exception):
     """Base exception for GitLab CI parsing errors."""
@@ -100,6 +100,7 @@ def _is_job_definition(name: str, value: Any) -> bool:
 
     return any(key in value for key in ("script", "trigger", "rules"))
 
+
 def _parse_script(content: dict[str, Any]) -> list[str]:
     """
     Function to parse the script defined in a YAML file.
@@ -118,6 +119,7 @@ def _parse_script(content: dict[str, Any]) -> list[str]:
         return [str(line) for line in script]
 
     raise GitlabCIParserError("'script' must be a string or list of strings")
+
 
 def _parse_runner(content: dict[str, Any]) -> str | None:
     """
@@ -158,6 +160,7 @@ def _parse_needs(content: dict[str, Any]) -> list[str] | None:
 
     raise GitlabCIParserError("'needs' must be a list")
 
+
 def _parse_rules(content: dict[str, Any]) -> list[Mapping[str, Any]] | None:
     """
     Function to parse the rules defined in a YAML file.
@@ -174,6 +177,7 @@ def _parse_rules(content: dict[str, Any]) -> list[Mapping[str, Any]] | None:
 
     return rules
 
+
 def _parse_workflow(raw: dict[str, Any]) -> Mapping[str, Any] | None:
     workflow = raw.get("workflow")
 
@@ -184,6 +188,7 @@ def _parse_workflow(raw: dict[str, Any]) -> Mapping[str, Any] | None:
         raise GitlabCIParserError("'workflow' must be a mapping")
 
     return workflow
+
 
 def _parse_jobs(raw: dict[str, Any]) -> list[Job]:
     jobs: list[Job] = []
@@ -210,6 +215,7 @@ def _parse_jobs(raw: dict[str, Any]) -> list[Job]:
 
     return jobs
 
+
 def parse(path: pathlib.Path) -> Pipeline:
     raw = _load_yaml(path)
 
@@ -225,4 +231,3 @@ def parse(path: pathlib.Path) -> Pipeline:
         variables=variables,
         workflow=workflow,
     )
-

@@ -1,7 +1,7 @@
 from collections import defaultdict
-from typing import List, Dict
+from typing import List
 
-from gitlabci_doc.domain.Graph import PipelineGraph, JobNode, Dependency
+from gitlabci_doc.domain.Graph import Dependency, JobNode, PipelineGraph
 from gitlabci_doc.domain.Job import Job
 from gitlabci_doc.domain.Pipeline import Pipeline
 
@@ -10,6 +10,7 @@ class PipelineGraphError(Exception):
     """
     Base exception for errors occurring during pipeline graph construction.
     """
+
     pass
 
 
@@ -140,11 +141,7 @@ class PipelineGraphBuilder:
         for needed in job.needs:
             if needed in jobs_by_name:
                 dependencies.append(
-                    Dependency(
-                        from_job=needed,
-                        to_job=job.name,
-                        kind="needs"
-                    )
+                    Dependency(from_job=needed, to_job=job.name, kind="needs")
                 )
 
         return dependencies
@@ -170,10 +167,6 @@ class PipelineGraphBuilder:
         previous_stage = stage_order[current_stage_idx - 1]
 
         return [
-            Dependency(
-                from_job=previous_job.name,
-                to_job=job.name,
-                kind="implicit"
-            )
+            Dependency(from_job=previous_job.name, to_job=job.name, kind="implicit")
             for previous_job in jobs_by_stage.get(previous_stage, [])
         ]

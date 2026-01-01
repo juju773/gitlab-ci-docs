@@ -1,13 +1,11 @@
 import pytest
 
 from gitlabci_doc.domain.Stage import Stage
-from gitlabci_doc.infrastructure.yaml_parser import _parse_stages, GitlabCIParserError
+from gitlabci_doc.infrastructure.yaml_parser import GitlabCIParserError, _parse_stages
 
 
 def test_parse_stages_ok():
-    raw = {
-        "stages": ["build", "test", "deploy"]
-    }
+    raw = {"stages": ["build", "test", "deploy"]}
 
     stages = _parse_stages(raw)
 
@@ -17,10 +15,9 @@ def test_parse_stages_ok():
         Stage(name="deploy"),
     ]
 
+
 def test_parse_stages_invalid_type():
-    raw = {
-        "stages": "build"
-    }
+    raw = {"stages": "build"}
 
     with pytest.raises(GitlabCIParserError):
         _parse_stages(raw)

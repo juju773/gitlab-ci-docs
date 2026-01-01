@@ -1,23 +1,17 @@
-from gitlabci_doc.infrastructure.yaml_parser import _parse_jobs, _is_job_definition
+from gitlabci_doc.infrastructure.yaml_parser import _is_job_definition, _parse_jobs
 
 
 def test_is_job_definition_not_a_mapping():
-    assert not _is_job_definition(
-        "job",
-        "echo test"
-    )
+    assert not _is_job_definition("job", "echo test")
+
 
 def test_is_job_definition_valid():
-    assert _is_job_definition(
-        "build-job",
-        {"stage": "build", "script": ["make"]}
-    )
+    assert _is_job_definition("build-job", {"stage": "build", "script": ["make"]})
+
 
 def test_is_job_definition_hidden():
-    assert not _is_job_definition(
-        ".template",
-        {"script": ["echo test"]}
-    )
+    assert not _is_job_definition(".template", {"script": ["echo test"]})
+
 
 def test_parse_jobs_simple():
     raw = {

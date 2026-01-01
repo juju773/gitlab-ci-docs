@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Mapping, Any
+from typing import Any, Mapping
 
 from gitlabci_doc.domain.Job import Job
 from gitlabci_doc.domain.Stage import Stage
@@ -20,6 +20,7 @@ class Pipeline:
     variables : Mapping[str, str] | None
         list of global environment variables added to all jobs
     """
+
     name: str | None
     stages: list[Stage]
     jobs: list[Job]
@@ -31,14 +32,14 @@ class Pipeline:
             print(f"Pipeline: {self.name}\n")
 
         if self.variables is not None:
-            print('variables:')
+            print("variables:")
             print(f"\t{self.variables}\n")
 
-        print('stages: ')
+        print("stages: ")
         for stage in self.stages:
             print(f"\t{stage}")
-        print('')
+        print("")
 
-        print('jobs: ')
+        print("jobs: ")
         for job in self.jobs:
             job.print()

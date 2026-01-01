@@ -3,7 +3,9 @@ import pathlib
 from gitlabci_doc.infrastructure.yaml_parser import parse
 
 
-def test_parse_pipeline(tmp_path: pathlib.Path): #todo change the file with a resource one
+def test_parse_pipeline(
+    tmp_path: pathlib.Path,
+):  # todo change the file with a resource one
     file = tmp_path / ".gitlab-ci.yml"
     file.write_text("""
 stages:

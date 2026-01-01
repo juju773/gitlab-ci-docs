@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass(frozen=True)
 class Stage:
     """
@@ -11,4 +12,5 @@ class Stage:
     name : str
         The name of the stage
     """
+
     name: str

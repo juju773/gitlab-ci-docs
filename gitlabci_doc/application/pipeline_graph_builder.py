@@ -1,5 +1,4 @@
 from collections import defaultdict
-from typing import List
 
 from gitlabci_doc.domain.Graph import Dependency, JobNode, PipelineGraph
 from gitlabci_doc.domain.Job import Job
@@ -10,7 +9,6 @@ class PipelineGraphError(Exception):
     """
     Base exception for errors occurring during pipeline graph construction.
     """
-
     pass
 
 
@@ -26,39 +24,73 @@ class PipelineGraphBuilder:
         """
         Entry point for graph construction.
 
-        - Creates graph nodes from pipeline jobs
+        - Computes strict stage order
+        - Creates graph nodes with deterministic ordering
         - Resolves dependencies between jobs
         """
-        nodes = self._build_nodes(pipeline.jobs)
+        stage_order = [stage.name for stage in pipeline.stages]
+
+        nodes = self._build_nodes(
+            jobs=pipeline.jobs,
+            stage_order=stage_order,
+        )
+
         dependencies = self._build_dependencies(
             jobs=pipeline.jobs,
-            stages=pipeline.stages,
+            stage_order=stage_order,
         )
 
         return PipelineGraph(
             nodes=nodes,
             dependencies=dependencies,
+            stage_order=stage_order,
         )
 
-    @staticmethod
-    def _build_nodes(jobs: List[Job]) -> List[JobNode]:
+    def _build_nodes(
+        self,
+        jobs: list[Job],
+        stage_order: list[str],
+    ) -> list[JobNode]:
         """
         Creates graph nodes from Job domain objects.
 
-        Each job becomes a JobNode with a name and a stage.
+        Jobs are ordered deterministically:
+        - grouped by stage (strict order)
+        - inside a stage:
+            - jobs with needs are ordered according to their dependencies
+            - jobs without needs are ordered alphabetically
         """
-        return [
-            JobNode(
-                name=job.name,
-                stage=job.stage,
+        jobs_by_stage = self._group_jobs_by_stage(jobs)
+        job_positions: dict[str, int] = {}
+
+        nodes: list[JobNode] = []
+        global_order = 0
+
+        for stage in stage_order:
+            stage_jobs = jobs_by_stage.get(stage, [])
+
+            sorted_jobs = self._sort_jobs_in_stage(
+                jobs=stage_jobs,
+                job_positions=job_positions,
             )
-            for job in jobs
-        ]
+
+            for job in sorted_jobs:
+                job_positions[job.name] = global_order
+                nodes.append(
+                    JobNode(
+                        name=job.name,
+                        stage=job.stage,
+                        order=global_order,
+                    )
+                )
+                global_order += 1
+
+        return nodes
 
     def _build_dependencies(
         self,
         jobs: list[Job],
-        stages: list,
+        stage_order: list[str],
     ) -> list[Dependency]:
         """
         Builds all dependencies between jobs.
@@ -67,12 +99,8 @@ class PipelineGraphBuilder:
         - explicit (defined via 'needs')
         - implicit (based on stage ordering)
         """
-        # Fast lookup structures to reduce algorithmic complexity
         jobs_by_name = {job.name: job for job in jobs}
         jobs_by_stage = self._group_jobs_by_stage(jobs)
-
-        # Preserve stage execution order
-        stage_order = [stage.name for stage in stages]
         stage_index = {name: idx for idx, name in enumerate(stage_order)}
 
         dependencies: list[Dependency] = []
@@ -94,8 +122,6 @@ class PipelineGraphBuilder:
     def _group_jobs_by_stage(jobs: list[Job]) -> dict[str, list[Job]]:
         """
         Groups jobs by their stage.
-
-        This function has a single responsibility and no business logic.
         """
         jobs_by_stage: dict[str, list[Job]] = defaultdict(list)
 
@@ -138,10 +164,14 @@ class PipelineGraphBuilder:
         """
         dependencies: list[Dependency] = []
 
-        for needed in job.needs:
+        for needed in job.needs or []:
             if needed in jobs_by_name:
                 dependencies.append(
-                    Dependency(from_job=needed, to_job=job.name, kind="needs")
+                    Dependency(
+                        from_job=needed,
+                        to_job=job.name,
+                        kind="needs",
+                    )
                 )
 
         return dependencies
@@ -160,13 +190,54 @@ class PipelineGraphBuilder:
         """
         current_stage_idx = stage_index.get(job.stage)
 
-        # First stage or unknown stage: no implicit dependencies
         if current_stage_idx is None or current_stage_idx == 0:
             return []
 
         previous_stage = stage_order[current_stage_idx - 1]
 
         return [
-            Dependency(from_job=previous_job.name, to_job=job.name, kind="implicit")
+            Dependency(
+                from_job=previous_job.name,
+                to_job=job.name,
+                kind="implicit",
+            )
             for previous_job in jobs_by_stage.get(previous_stage, [])
         ]
+
+    @staticmethod
+    def _sort_jobs_in_stage(
+        jobs: list[Job],
+        job_positions: dict[str, int],
+    ) -> list[Job]:
+        """
+        Sort jobs inside a stage.
+
+        Order rules:
+        - jobs with needs come first
+        - ordered by average position of their dependencies
+        - jobs without needs are ordered alphabetically
+        """
+
+        def dependency_score(job: Job) -> float | None:
+            if not job.needs:
+                return None
+
+            positions = [
+                job_positions[n]
+                for n in job.needs
+                if n in job_positions
+            ]
+
+            if not positions:
+                return None
+
+            return sum(positions) / len(positions)
+
+        return sorted(
+            jobs,
+            key=lambda job: (
+                dependency_score(job) is None,
+                dependency_score(job) or 0,
+                job.name.lower(),
+            ),
+        )

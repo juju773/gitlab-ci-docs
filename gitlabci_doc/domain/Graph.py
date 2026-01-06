@@ -10,6 +10,7 @@ class JobNode:
 
     name: str
     stage: str
+    order: int
 
 
 @dataclass(frozen=True)
@@ -29,5 +30,6 @@ class PipelineGraph:
     Directed acyclic graph representing a GitLab CI pipeline.
     """
 
-    nodes: Sequence[JobNode]
-    dependencies: Sequence[Dependency]
+    nodes: list[JobNode]
+    dependencies: list[Dependency]
+    stage_order: list[str]

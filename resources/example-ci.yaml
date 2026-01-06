@@ -1,0 +1,31 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  PYTHON_VERSION: "3.12"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+build-job:
+  stage: build
+  image: python:3.12
+  script:
+    - python -m pip install -U pip
+    - pip install -r requirements.txt
+  artifacts:
+    paths:
+      - dist/
+
+test-job:
+  stage: test
+  script: pytest
+  needs:
+    - build-job
+
+deploy-job:
+  stage: deploy
+  script:
+    - echo "Deploying application"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'

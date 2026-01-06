@@ -4,18 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cb0d17a8-5aca-4a3f-af8d-867bfc3ffb2b" name="Changes" comment="Init project">
-      <change afterPath="$PROJECT_DIR$/README.adoc" afterDir="false" />
+    <list default="true" id="cb0d17a8-5aca-4a3f-af8d-867bfc3ffb2b" name="Changes" comment="Refactor code style and add poetry configuration for project management">
+      <change afterPath="$PROJECT_DIR$/poetry.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gitlabci-doc.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gitlabci-doc.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/CLI.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/CLI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/application/pipeline_graph_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/application/pipeline_graph_builder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/domain/Graph.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/domain/Graph.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/domain/Job.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/domain/Job.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/domain/Pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/domain/Pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/domain/Stage.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/domain/Stage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/infrastructure/yaml_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/infrastructure/yaml_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/renderers/asciidoc.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/renderers/asciidoc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/renderers/asciidoc_mermaid.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/renderers/asciidoc_mermaid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/renderers/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/renderers/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/renderers/mermaid.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/renderers/mermaid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gitlabci_doc/writer/asciidoc.py" beforeDir="false" afterPath="$PROJECT_DIR$/gitlabci_doc/writer/asciidoc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/poetry.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/parser/test_global_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/parser/test_global_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/parser/test_job_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/parser/test_job_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/parser/test_other_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/parser/test_other_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/parser/test_stage_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/parser/test_stage_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/parser/test_yaml_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/parser/test_yaml_parser.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -34,7 +58,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/juju773/gitlab-ci-docs.git&quot;,
-    &quot;accountId&quot;: &quot;f02c3803-06bc-4659-9857-a2055f7e8add&quot;
+    &quot;accountId&quot;: &quot;a0acebb4-9187-4759-ba8e-c32670e8207b&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -48,16 +72,22 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.CLI.executor": "Run",
+    "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "add-tools",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "ai.playground.ignore.import.keys.banner.in.settings": "true",
+    "git-widget-placeholder": "feature/domain-model",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.editor",
+    "settings.editor.selected.configurable": "Settings.AsciiDoc.Preview",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -66,11 +96,42 @@
       <command value="pip install pipx" />
     </option>
   </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="gitlabci-doc" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-c7e53b3be11b-JavaScript-PY-253.28294.336" />
-        <option value="bundled-python-sdk-0978a7220b69-9867c7d4c0a4-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.28294.336" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.29346.142" />
+        <option value="bundled-python-sdk-f2b7a9f6281b-6e1f45a539f7-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.29346.142" />
       </set>
     </attachedChunks>
   </component>
@@ -84,7 +145,11 @@
       <workItem from="1765623185580" duration="1115000" />
       <workItem from="1765624372316" duration="69000" />
       <workItem from="1765643521312" duration="1580000" />
-      <workItem from="1765645127639" duration="602000" />
+      <workItem from="1765645127639" duration="1517000" />
+      <workItem from="1765812011745" duration="9477000" />
+      <workItem from="1765883304579" duration="2226000" />
+      <workItem from="1765890553747" duration="1655000" />
+      <workItem from="1767267522818" duration="781000" />
     </task>
     <task id="LOCAL-00001" summary="Init project">
       <option name="closed" value="true" />
@@ -94,7 +159,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765624252365</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Initialize all the documents and tools for development">
+      <option name="closed" value="true" />
+      <created>1765646027265</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1765646027265</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -125,7 +198,25 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Init project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Init project" />
+    <MESSAGE value="Initialize all the documents and tools for development" />
+    <MESSAGE value="Refactor code style and add poetry configuration for project management" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor code style and add poetry configuration for project management" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/gitlabci_doc$main.coverage" NAME="main Coverage Results" MODIFIED="1765891649147" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/gitlab_ci_docs$CLI.coverage" NAME="CLI Coverage Results" MODIFIED="1767267916559" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gitlabci_doc" />
+    <SUITE FILE_PATH="coverage/gitlab_ci_docs$main.coverage" NAME="main Coverage Results" MODIFIED="1767267787096" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
